@@ -1,4 +1,4 @@
-# Store Intelligence System — Purplle Challenge
+# Apex Store Intelligence Platform — Purplle Tech Challenge
 
 Apex Retail Store Intelligence System is an end-to-end computer vision and analytics platform that transforms raw CCTV video streams into live dashboard metrics, conversion funnels, and operational anomalies.
 
@@ -10,19 +10,21 @@ The flow of information from raw video frame ingestion to API metrics delivery:
 
 ```mermaid
 graph TD
-    V[CCTV Video Streams] -->|OpenCV Frame Reader| YOLO[YOLOv8-Small Person Detector]
-    YOLO -->|Bounding Boxes| BT[ByteTrack Tracking]
-    BT -->|Track IDs| RE[torso HSV Color Histogram Re-ID]
-    RE -->|visitor_id Session Tokens| ZM[Polygon Zone Matcher]
-    ZM -->|State Triggers| IH[pipeline/ingest.py Batch Ingest]
-    IH -->|Pydantic validation| API[FastAPI /events/ingest]
-    API -->|WAL Mode Concurrency| DB[(SQLite Database)]
-    DB -->|SQL Metrics queries| UI[Dashboard UI /dashboard/]
+    V["CCTV Video Streams"] -->|OpenCV Frame Reader| YOLO["YOLOv8-Small Person Detector"]
+    YOLO -->|Bounding Boxes| BT["ByteTrack Tracking"]
+    BT -->|Track IDs| RE["torso HSV Color Histogram Re-ID"]
+    RE -->|visitor_id Session Tokens| ZM["Polygon Zone Matcher"]
+    ZM -->|State Triggers| IH["pipeline/ingest.py Batch Ingest"]
+    IH -->|Pydantic validation| API["FastAPI /events/ingest"]
+    API -->|WAL Mode Concurrency| DB[("SQLite Database")]
+    DB -->|SQL Metrics queries| UI["Dashboard UI /dashboard/"]
 ```
+
+For a detailed breakdown of components, see [DESIGN.md](file:///c:/Users/Dhruv%20Bansal/Desktop/Purplle%20final/DESIGN.md) and [CHOICES.md](file:///c:/Users/Dhruv%20Bansal/Desktop/Purplle%20final/CHOICES.md).
 
 ---
 
-## 2. Quick Setup (5 Commands)
+## 2. Quick Setup (Docker Compose)
 
 To build, seed, and launch the REST API and live dashboard on a clean machine:
 
@@ -53,12 +55,12 @@ Once running:
 
 If you have python installed locally, you can run components directly:
 
-### 1. Install Dependencies
+### 3.1 Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Seed Transactions & Process Videos
+### 3.2 Seed Transactions & Process Videos
 ```bash
 # Seed POS transactions
 python app/import_pos.py
@@ -67,13 +69,13 @@ python app/import_pos.py
 powershell -ExecutionPolicy Bypass -File pipeline/run.ps1
 ```
 
-### 3. Ingest Events
+### 3.3 Ingest Events
 ```bash
 # Run the local python batch importer
 python pipeline/ingest.py pipeline_events.jsonl http://localhost:8000/events/ingest
 ```
 
-### 4. Start Local Development API
+### 3.4 Start Local Development API
 ```bash
 uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
@@ -81,6 +83,8 @@ uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ---
 
 ## 4. System Endpoints
+
+The API is defined in [main.py](file:///c:/Users/Dhruv%20Bansal/Desktop/Purplle%20final/app/main.py) and schema models in [models.py](file:///c:/Users/Dhruv%20Bansal/Desktop/Purplle%20final/app/models.py):
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |

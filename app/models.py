@@ -2,9 +2,6 @@ from pydantic import BaseModel, Field, RootModel
 from typing import Optional, List
 from datetime import datetime
 
-class EventBatch(RootModel):
-    root: List[EventSchema] = Field(..., max_length=500, description="Batch of up to 500 events")
-
 class EventMetadata(BaseModel):
     queue_depth: Optional[int] = Field(None, description="Current queue depth for BILLING_QUEUE_JOIN events")
     sku_zone: Optional[str] = Field(None, description="SKU zone associated with the event")
@@ -22,6 +19,9 @@ class EventSchema(BaseModel):
     is_staff: bool = Field(False, description="Flag indicating if visitor is an employee")
     confidence: float = Field(1.0, description="Model tracking confidence score between 0.0 and 1.0")
     metadata: EventMetadata = Field(default_factory=EventMetadata)
+
+class EventBatch(RootModel):
+    root: List[EventSchema] = Field(..., max_length=500, description="Batch of up to 500 events")
 
 class IngestResponseSchema(BaseModel):
     status: str = Field("success", description="Status of batch ingestion")
