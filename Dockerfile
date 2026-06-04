@@ -23,5 +23,5 @@ COPY . .
 # Expose port 8000 for FastAPI
 EXPOSE 8000
 
-# Run FastAPI by default
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run POS seeder and start FastAPI by default
+CMD ["sh", "-c", "python app/import_pos.py && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
