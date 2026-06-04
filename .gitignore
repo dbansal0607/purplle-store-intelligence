@@ -1,0 +1,23 @@
+# Videos and large dataset zips
+*.zip
+*.mp4
+Store 1/
+Store 2/
+*.csv
+!POS - sample transactionsb1e826f.csv
+*.jsonl
+!sample_eventsbe42122.jsonl
+*.db
+*.sqlite3
+
+# Python caches and local settings
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.env
+venv/
+.idea/
+.vscode/

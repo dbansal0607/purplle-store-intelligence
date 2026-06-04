@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Retail — Store Intelligence Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/dashboard/index.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="logo-dot"></span>
+                <h1>APEX RETAIL</h1>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="active"><i data-lucide="layout-dashboard"></i> Store Analytics</a>
+                <a href="/docs" target="_blank"><i data-lucide="file-text"></i> API Reference</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="status-indicator-container">
+                    <span class="status-dot green"></span>
+                    <span class="status-text">System Active</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard View -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="header-title">
+                    <h2>Store Intelligence Console</h2>
+                    <p class="subtitle">Live retail operations and computer vision feedback analytics</p>
+                </div>
+                
+                <div class="header-actions">
+                    <!-- Store Selector -->
+                    <div class="select-wrapper">
+                        <i data-lucide="store" class="select-icon"></i>
+                        <select id="storeSelector">
+                            <option value="STORE_BLR_001">Store 1 (Bengaluru Main)</option>
+                            <option value="STORE_BLR_002">Store 2 (Bengaluru Side)</option>
+                        </select>
+                    </div>
+                    
+                    <!-- System Refresh Button -->
+                    <button class="btn btn-refresh" id="refreshBtn">
+                        <i data-lucide="rotate-cw"></i> Refresh
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                
+                <!-- KPI CARDS GRID -->
+                <section class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">Unique Visitors</span>
+                            <div class="icon-container purple"><i data-lucide="users"></i></div>
+                        </div>
+                        <div class="kpi-value" id="kpiVisitors">0</div>
+                        <div class="kpi-footer">
+                            <span class="trend neutral">Total deduplicated visits today</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">Conversion Rate</span>
+                            <div class="icon-container green"><i data-lucide="percent"></i></div>
+                        </div>
+                        <div class="kpi-value" id="kpiConversion">0.0%</div>
+                        <div class="kpi-footer">
+                            <span class="trend positive">Time-correlated POS transactions</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">Queue Depth</span>
+                            <div class="icon-container yellow"><i data-lucide="list-ordered"></i></div>
+                        </div>
+                        <div class="kpi-value" id="kpiQueue">0</div>
+                        <div class="kpi-footer">
+                            <span class="trend warning" id="kpiQueueStatus">Normal checkout queue</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">Abandonment Rate</span>
+                            <div class="icon-container red"><i data-lucide="shopping-cart"></i></div>
+                        </div>
+                        <div class="kpi-value" id="kpiAbandonment">0.0%</div>
+                        <div class="kpi-footer">
+                            <span class="trend negative">Joined queue but left store without POS</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MIDDLE ANALYTICS SECTION -->
+                <div class="analytics-row">
+                    <!-- Funnel Analysis -->
+                    <div class="card funnel-card">
+                        <div class="card-header">
+                            <h3>Deduplicated Conversion Funnel</h3>
+                            <span class="badge blue">Session Based</span>
+                        </div>
+                        <div class="funnel-container" id="funnelContainer">
+                            <!-- Injected dynamically -->
+                            <div class="loader">Loading funnel data...</div>
+                        </div>
+                    </div>
+
+                    <!-- Store Heatmap -->
+                    <div class="card heatmap-card">
+                        <div class="card-header">
+                            <h3>Zone Engagement Heatmap</h3>
+                            <div class="conf-badge-wrapper">
+                                <span class="badge" id="dataConfidenceBadge">HIGH CONFIDENCE</span>
+                            </div>
+                        </div>
+                        <div class="heatmap-container" id="heatmapContainer">
+                            <!-- Injected dynamically -->
+                            <div class="loader">Loading heatmap data...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTTOM ROW (ANOMALIES & SYSTEM HEALTH) -->
+                <div class="bottom-row">
+                    <!-- Active Anomalies Feed -->
+                    <div class="card anomaly-card">
+                        <div class="card-header">
+                            <h3>Active Operational Anomalies</h3>
+                            <span class="anomaly-pulse-dot"></span>
+                        </div>
+                        <div class="anomaly-list" id="anomalyList">
+                            <!-- Injected dynamically -->
+                            <div class="no-anomalies">No active anomalies detected. Operations running smoothly.</div>
+                        </div>
+                    </div>
+
+                    <!-- System Feed Status -->
+                    <div class="card status-card">
+                        <div class="card-header">
+                            <h3>Feed Status Audit</h3>
+                        </div>
+                        <div class="status-list" id="feedStatusList">
+                            <!-- Injected dynamically -->
+                            <div class="loader">Querying system feeds...</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="/dashboard/index.js"></script>
+</body>
+</html>

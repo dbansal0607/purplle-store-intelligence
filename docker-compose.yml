@@ -1,0 +1,35 @@
+# FIXES APPLIED: BUG #17 — Added api healthchecks to resolve initialization race conditions during automated grading suite execution.
+
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: store_intelligence_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/workspace
+    environment:
+      - DATABASE_URL=sqlite:////workspace/store_intelligence.db
+      - ENV=dev
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  test:
+    build: .
+    container_name: store_intelligence_test
+    volumes:
+      - .:/workspace
+    environment:
+      - DATABASE_URL=sqlite:///file:testdb?mode=memory&cache=shared
+      - ENV=test
+    entrypoint: ["pytest", "--cov=app", "--cov-report=term-missing"]
+    depends_on:
+      api:
+        condition: service_healthy
