@@ -20,7 +20,7 @@ graph TD
     DB -->|SQL Metrics queries| UI["Dashboard UI /dashboard/"]
 ```
 
-For a detailed breakdown of components, see [DESIGN.md](file:///c:/Users/Dhruv%20Bansal/Desktop/Purplle%20final/DESIGN.md) and [CHOICES.md](file:///c:/Users/Dhruv%20Bansal/Desktop/Purplle%20final/CHOICES.md).
+For a detailed breakdown of components, see [DESIGN.md](DESIGN.md) and [CHOICES.md](CHOICES.md).
 
 ---
 
@@ -84,7 +84,7 @@ uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 
 ## 4. System Endpoints
 
-The API is defined in [main.py](file:///c:/Users/Dhruv%20Bansal/Desktop/Purplle%20final/app/main.py) and schema models in [models.py](file:///c:/Users/Dhruv%20Bansal/Desktop/Purplle%20final/app/models.py):
+The API is defined in [app/main.py](app/main.py) and schema models in [app/models.py](app/models.py):
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -93,4 +93,4 @@ The API is defined in [main.py](file:///c:/Users/Dhruv%20Bansal/Desktop/Purplle%
 | `GET` | `/stores/{id}/funnel` | Returns conversion funnel progression stages |
 | `GET` | `/stores/{id}/heatmap` | Returns normalized shopping zone heatmap values |
 | `GET` | `/stores/{id}/anomalies` | Lists active warnings (queue spikes, dead zones) |
-| `GET` | `/health` | Verifies DB connection and reports feed staleness |
+| `GET` | `/health` | Verifies DB connection and reports feed status |

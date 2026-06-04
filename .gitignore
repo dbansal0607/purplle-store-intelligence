@@ -10,6 +10,22 @@ Store 2/
 *.db
 *.sqlite3
 
+# SQLite WAL and journal files
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite3-wal
+*.sqlite3-shm
+*.sqlite3-journal
+
+# ML weights
+*.pt
+
+# Generated CV events and output files
+pipeline_events.jsonl
+detected_events.jsonl
+simulated_events.jsonl
+
 # Python caches and local settings
 __pycache__/
 *.py[cod]
