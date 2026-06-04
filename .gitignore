@@ -22,7 +22,7 @@ Store 2/
 *.pt
 
 # Generated CV events and output files
-pipeline_events.jsonl
+!pipeline_events.jsonl
 detected_events.jsonl
 simulated_events.jsonl
 
