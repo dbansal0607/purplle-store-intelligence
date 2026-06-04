@@ -1,12 +1,28 @@
-# FIXES APPLIED: BUG #10 — Replaced raw curl JSONL posts with a dedicated python batching ingestion utility.
-
-# Purplle Store Intelligence System
+# Store Intelligence System — Purplle Challenge
 
 Apex Retail Store Intelligence System is an end-to-end computer vision and analytics platform that transforms raw CCTV video streams into live dashboard metrics, conversion funnels, and operational anomalies.
 
 ---
 
-## Quick Setup (5 Commands)
+## 1. Visual Pipeline Architecture
+
+The flow of information from raw video frame ingestion to API metrics delivery:
+
+```mermaid
+graph TD
+    V[CCTV Video Streams] -->|OpenCV Frame Reader| YOLO[YOLOv8-Small Person Detector]
+    YOLO -->|Bounding Boxes| BT[ByteTrack Tracking]
+    BT -->|Track IDs| RE[torso HSV Color Histogram Re-ID]
+    RE -->|visitor_id Session Tokens| ZM[Polygon Zone Matcher]
+    ZM -->|State Triggers| IH[pipeline/ingest.py Batch Ingest]
+    IH -->|Pydantic validation| API[FastAPI /events/ingest]
+    API -->|WAL Mode Concurrency| DB[(SQLite Database)]
+    DB -->|SQL Metrics queries| UI[Dashboard UI /dashboard/]
+```
+
+---
+
+## 2. Quick Setup (5 Commands)
 
 To build, seed, and launch the REST API and live dashboard on a clean machine:
 
@@ -33,7 +49,7 @@ Once running:
 
 ---
 
-## Local Development (Without Docker)
+## 3. Local Development (Without Docker)
 
 If you have python installed locally, you can run components directly:
 
@@ -64,7 +80,7 @@ uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 
 ---
 
-## System Endpoints
+## 4. System Endpoints
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
